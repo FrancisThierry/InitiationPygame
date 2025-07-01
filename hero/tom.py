@@ -79,3 +79,10 @@ class Tom:
 
         self.x = max(0, min(new_x, screen_width_limit - self.size))
         self.y = max(0, min(new_y, screen_height_limit - self.size))
+    # Méthode pour obtenir le rectangle de collision de Tom
+    # Utilisé pour la détection de collision avec d'autres objets
+    def get_rect(self):
+        import pygame
+        return pygame.Rect(self.x, self.y, self.sprite_width, self.sprite_height)
+
+    # Add other methods as needed

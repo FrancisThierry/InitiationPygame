@@ -3,7 +3,7 @@
 import pygame
 import sys
 from hero.tom import Tom
-from wall.brick_wall import BrickWall # Importez Tom depuis le module hero.tom
+from wall.brick_wall import BrickWall
 
 class Application:
     def __init__(self, name: str):
@@ -13,36 +13,54 @@ class Application:
         self.screen = None
         self.clock = None
         self.tom = None
-        self.brick_wall = None  # Initialisation de brick_wall
+        self.brick_wall = None
         self.FPS = 60
 
+    def check_collision(self, rect1, rect2):
+        return rect1.colliderect(rect2)
+
+    def show_shadow_realm(self):
+        self.stageKingDom()
+
+    def stageKingDom(self):
+        font = pygame.font.SysFont(None, 48)
+        text = font.render("Bienvenue dans le royaume des ombres", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+        self.screen.fill((30, 30, 30))
+        self.screen.blit(text, text_rect)
+        pygame.display.flip()
+        # Attend que l'utilisateur ferme la fenêtre ou appuie sur une touche
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    waiting = False
+
     def run(self):
+        self.stageOne()
+
+    def stageOne(self):
         print(f"Running application: {self.name}")
         pygame.init()
 
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption(self.name)
         
-        self.brick_wall = BrickWall(x=10,y=10,width=100,height=100)  # Vous pouvez initialiser brick_wall ici si nécessaire
-
-        # Initialisation de Tom. Sa taille est maintenant gérée DANS la classe Tom
-        # et est fixée à 50 par défaut pour le redimensionnement du sprite.
-        # Vous ne définissez plus tom.size ici directement.
-        self.tom = Tom(x=100, y=100) # Utilisez les positions initiales que vous avez définies
-
+        self.brick_wall = BrickWall(x=10, y=10, width=100, height=100)
+        self.tom = Tom(x=500, y=300)
         self.clock = pygame.time.Clock()
 
         running = True
         while running:
-            # Réinitialise le déplacement pour la frame actuelle
             dx, dy = 0, 0
 
-            # Gestion des événements
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
-            # Gestion des touches pressées pour le mouvement continu
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT] or keys[pygame.K_q]:
                 dx = -self.tom.speed
@@ -53,22 +71,27 @@ class Application:
             if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 dy = self.tom.speed
 
-            # La méthode move de Tom gère le déplacement et la limitation aux bords.
-            self.tom.move(dx, dy)
-            # La méthode update de Tom ne fait rien maintenant, mais l'appel est inoffensif.
+            # Gestion collision
+            future_rect = self.tom.get_rect().move(dx, dy)
+            if not self.check_collision(future_rect, self.brick_wall.get_rect()):
+                self.tom.move(dx, dy)
+            else:
+                # Affiche l'écran spécial et quitte la boucle principale
+                self.show_shadow_realm()
+                running = False
+                continue
+
             self.tom.update()
 
-            # Dessin
-            self.screen.fill((0, 0, 0)) # Fond blanc
-            self.tom.draw(self.screen) # Dessine Tom
-            self.brick_wall.draw(self.screen) # Dessine le mur en brique
-            pygame.display.flip()       # Met à jour l'écran
+            self.screen.fill((0, 0, 0))
+            self.tom.draw(self.screen)
+            self.brick_wall.draw(self.screen)
+            pygame.display.flip()
 
-            # Contrôle du Framerate
             self.clock.tick(self.FPS)
 
         pygame.quit()
-        sys.exit() # sys.exit() est préférable après pygame.quit()
+        sys.exit()
         print(f"Application {self.name} has exited.")
 
 if __name__ == "__main__":
