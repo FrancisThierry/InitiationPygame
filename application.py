@@ -2,7 +2,8 @@
 
 import pygame
 import sys
-from hero.tom import Tom # Importez Tom depuis le module hero.tom
+from hero.tom import Tom
+from wall.brick_wall import BrickWall # Importez Tom depuis le module hero.tom
 
 class Application:
     def __init__(self, name: str):
@@ -12,6 +13,7 @@ class Application:
         self.screen = None
         self.clock = None
         self.tom = None
+        self.brick_wall = None  # Initialisation de brick_wall
         self.FPS = 60
 
     def run(self):
@@ -20,6 +22,8 @@ class Application:
 
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption(self.name)
+        
+        self.brick_wall = BrickWall(x=10,y=10,width=100,height=100)  # Vous pouvez initialiser brick_wall ici si nécessaire
 
         # Initialisation de Tom. Sa taille est maintenant gérée DANS la classe Tom
         # et est fixée à 50 par défaut pour le redimensionnement du sprite.
@@ -55,8 +59,9 @@ class Application:
             self.tom.update()
 
             # Dessin
-            self.screen.fill((0, 0, 0)) # Fond noir
+            self.screen.fill((0, 0, 0)) # Fond blanc
             self.tom.draw(self.screen) # Dessine Tom
+            self.brick_wall.draw(self.screen) # Dessine le mur en brique
             pygame.display.flip()       # Met à jour l'écran
 
             # Contrôle du Framerate
