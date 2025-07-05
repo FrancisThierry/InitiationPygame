@@ -13,7 +13,7 @@ class Tom:
         self.x = x
         self.y = y
         self.display_size = 64  # Taille finale désirée (ex: 100x100 pixels)
-        self.speed = 5
+        self.speed = 2
 
         self.size = self.display_size
 
@@ -65,7 +65,7 @@ class Tom:
         if dx > 0:  # Mouvement vers la droite
             self.current_image = self.sprites["right"]
         elif dx < 0: # Mouvement vers la gauche
-            self.current_image = self.sprites["left"] # NOUVEAU : Utilise le sprite "left"
+            self.current_image = pygame.transform.flip(self.sprites["right"], True, False)  # Utilise le sprite "right" renversé horizontalement
         elif dy != 0: # Mouvement vertical (haut ou bas)
             self.current_image = self.sprites["default"]
         else: # Pas de mouvement
