@@ -4,6 +4,7 @@ import pygame
 import sys
 from hero.tom import Tom
 from stages.stage_kingdom import StageKingDom
+from stages.stage_with_camera import StageWithCamera
 from stages.stage_with_tiles import StageWithTiles
 from wall.brick_wall import BrickWall
 from stages.stage_one import StageOne
@@ -23,14 +24,21 @@ class Application:
     def check_collision(self, rect1, rect2):
         return rect1.colliderect(rect2)
 
-    def show_shadow_realm(self):
+    def show_stage_kingdom(self):
         self.stageKingDom()
 
     def stageKingDom(self):
         stageKingdom = StageKingDom(self)
 
     def run(self):
-        self.stageOne()
+        # self.stageOne()
+        self.stageWithCamera()
+        
+    def stageWithCamera(self):
+        # Placeholder for showing a stage with camera functionality
+        print("Showing stage with camera functionality")
+        stageWithCamera = StageWithCamera(self)
+        stageWithCamera.start()
 
     def stageOne(self):
         print(f"Running application: {self.name}")        

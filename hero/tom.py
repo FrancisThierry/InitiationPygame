@@ -56,6 +56,11 @@ class Tom:
 
     def draw(self, screen):
         screen.blit(self.current_image, (self.x, self.y))
+        
+    def drawWithCamera(self, screen, camera):
+        rect = pygame.Rect(self.x, self.y, self.display_size, self.display_size)
+        screen.blit(self.current_image, camera.apply(rect))
+
 
     def update(self):
         pass

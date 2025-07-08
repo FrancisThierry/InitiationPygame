@@ -41,7 +41,7 @@ class StageOne:
                 mainGame.tom.move(dx, dy)
             else:
                 # Affiche l'écran spécial et quitte la boucle principale
-                mainGame.show_shadow_realm()
+                mainGame.show_stage_kingdom()
                 running = False
                 continue
 
