@@ -1,8 +1,10 @@
 # application.py
 
+import os
 import pygame
 import sys
 from hero.tom import Tom
+from sound.sound_player import SoundPlayer
 from stages.stage_kingdom import StageKingDom
 from stages.stage_with_camera import StageWithCamera
 from stages.stage_with_tiles import StageWithTiles
@@ -20,6 +22,8 @@ class Application:
         self.tom = None
         self.brick_wall = None
         self.FPS = 60
+        self.music_sound =  os.path.join(os.path.dirname(__file__), 'assets', 'music', 'Friends.ogg')
+
 
     def check_collision(self, rect1, rect2):
         return rect1.colliderect(rect2)
@@ -31,11 +35,13 @@ class Application:
         stageKingdom = StageKingDom(self)
 
     def run(self):
-        # self.stageOne()
-        self.stageWithCamera()
+        self.stageOne()
+        # self.stageWithCamera()
         
     def stageWithCamera(self):
         # Placeholder for showing a stage with camera functionality
+        sound = SoundPlayer(self.music_sound)
+        sound.play()        
         print("Showing stage with camera functionality")
         stageWithCamera = StageWithCamera(self)
         stageWithCamera.start()
