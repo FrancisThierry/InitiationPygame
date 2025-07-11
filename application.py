@@ -35,8 +35,8 @@ class Application:
         stageKingdom = StageKingDom(self)
 
     def run(self):
-        self.stageOne()
-        # self.stageWithCamera()
+        # self.stageOne()
+        self.stageWithCamera()
         
     def stageWithCamera(self):
         # Placeholder for showing a stage with camera functionality
